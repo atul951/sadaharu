@@ -1,0 +1,54 @@
+# Gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+backend/out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Node
+frontend/node_modules/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+backend/logs/
+*.log
+
+# Build outputs
+backend/build/
+.cursor/
+
+# Database (optional - uncomment if you don't want to commit the database)
+backend/database/
+database/*.sqlite
+database/*.db
+*.sqlite
+
+frontend/package-lock.json

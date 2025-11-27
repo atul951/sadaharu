@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Backend Spring Boot application
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trinity-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlite:/app/database/trinity_college.sqlite
+      - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - ./backend/database/trinity_college.sqlite:/app/database/trinity_college.sqlite
+      - backend-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - trinity-net
+    restart: unless-stopped
+
+  # Frontend React application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trinity-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8080
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - trinity-net
+    restart: unless-stopped
+
+volumes:
+  backend-logs:
+    driver: local
+
+networks:
+  trinity-net:
+    driver: bridge
